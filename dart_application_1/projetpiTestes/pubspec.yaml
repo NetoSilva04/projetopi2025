@@ -1,0 +1,28 @@
+name: projetopi
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+repository: https://github.com/sarbagyastha/youtube_player_flutter
+homepage: https://github.com/sarbagyastha/youtube_player_flutter/tree/main/packages/youtube_player_flutter
+
+environment:
+  sdk: ^3.7.2
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  youtube_player_flutter: ^8.1.2
+  cupertino_icons: ^1.0.8
+  flutter_inappwebview: ^5.7.2+3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
