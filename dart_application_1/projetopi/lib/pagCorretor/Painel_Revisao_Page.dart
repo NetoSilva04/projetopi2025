@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projetopi/pagCorretor/CorretorHome_page.dart';
 import 'package:projetopi/pagCorretor/correcaoredacao_page.dart';
+import 'package:intl/intl.dart';
 
 class PainelRevisaoPage extends StatefulWidget {
   final String aluno;
@@ -20,27 +20,32 @@ class PainelRevisaoPage extends StatefulWidget {
   });
 
   @override
-  _PainelRevisaoPageState createState() => _PainelRevisaoPageState();
+  PainelRevisaoPageState createState() => PainelRevisaoPageState();
 }
 
-class _PainelRevisaoPageState extends State<PainelRevisaoPage> {
+class PainelRevisaoPageState extends State<PainelRevisaoPage> {
   bool emRevisao = false;
 
 
-  void _marcarEmRevisao() {
-    
-    setState(() {
-      emRevisao = true;
-    });
+void _marcarEmRevisao() {
+  setState(() {
+    emRevisao = true;
+  });
 
-  
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CorrecaoRedacaoPage(), 
+  final dataFormatada = DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CorrecaoRedacaoPage(
+        aluno: widget.aluno,
+        tema: widget.tema,
+        data: dataFormatada,
+        texto: widget.texto,
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

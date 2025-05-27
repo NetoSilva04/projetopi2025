@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'redacaorecebida_page.dart';
 import 'emrevisao_page.dart';  
 import 'pendentes_page.dart';  
-import 'redacoescorrigidas_page.dart'; 
+import 'redacoescorrigidas_page.dart';
+import 'package:projetopi/teladelogin_screen.dart';
 
 class CorretorHomePage extends StatefulWidget {
   const CorretorHomePage({super.key});
@@ -13,7 +14,6 @@ class CorretorHomePage extends StatefulWidget {
 
 class _CorretorHomePageState extends State<CorretorHomePage> {
   int selectedIndex = 0;
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -80,7 +80,7 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
                 children: [
                   CircleAvatar(
                     radius: 40,
-                    backgroundImage: NetworkImage('https://startupi.com.br/wp-content/uploads/2023/10/internauta-recriou-cantora-Ariana-Grande-como-personagem-da-Disney-Pixar.jpg'),
+                    backgroundImage: NetworkImage('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/220px-Pierre-Person.jpg'),
                   ),
                   const SizedBox(height: 10),
                   const Text(
@@ -141,7 +141,13 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
                   ListTile(
                     leading: const Icon(Icons.logout),
                     title: const Text('Sair'),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        (route) => false,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -182,7 +188,7 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
-        onTap: _onItemTapped,  // Definindo o método para navegação nos itens da barra inferior
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.assignment, color: Colors.orange),
@@ -349,9 +355,13 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
             const Text('Próximos prazos:'),
             const SizedBox(height: 8),
             ListTile(
-              title: const Text('Revisar redação de João'),
-              subtitle: const Text('Data: 05/05/2025'),
-              leading: const Icon(Icons.calendar_today, color: Colors.blue),
+              leading: const Icon(Icons.calendar_today, color: Colors.orange),
+              title: const Text('Entrega de redação - 05/05/2025'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_today, color: Colors.orange),
+              title: const Text('Revisão final - 10/05/2025'),
               onTap: () {},
             ),
           ],

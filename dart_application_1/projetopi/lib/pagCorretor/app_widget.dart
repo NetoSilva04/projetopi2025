@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projetopi/pagCorretor/app_widget.dart';
 import 'package:projetopi/pagCorretor/home_page.dart';
 
 class AppWidget extends StatelessWidget {
