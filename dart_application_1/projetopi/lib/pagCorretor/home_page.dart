@@ -12,8 +12,41 @@ class CorretorHomePage extends StatefulWidget {
   State<CorretorHomePage> createState() => _CorretorHomePageState();
 }
 
-class _CorretorHomePageState extends State<CorretorHomePage> {
+class _CorretorHomePageState extends State<CorretorHomePage> with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
+  late AnimationController _animationController;
+  late Animation<Offset> _offsetAnimation;
+  bool _showNotificationPanel = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0, -1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+  }
+
+  void _toggleNotificationPanel() {
+    setState(() {
+      _showNotificationPanel = !_showNotificationPanel;
+      if (_showNotificationPanel) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -65,7 +98,7 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: _toggleNotificationPanel,
           ),
         ],
       ),
@@ -129,11 +162,6 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
                     onTap: () {},
                   ),
                   ListTile(
-                    leading: const Icon(Icons.notifications),
-                    title: const Text('Notificações'),
-                    onTap: () {},
-                  ),
-                  ListTile(
                     leading: const Icon(Icons.settings),
                     title: const Text('Configurações'),
                     onTap: () {},
@@ -155,36 +183,69 @@ class _CorretorHomePageState extends State<CorretorHomePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Bem-vindo ao Painel do Corretor!',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF512DA8),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Bem-vindo ao Painel do Corretor!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF512DA8),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Aqui estão suas tarefas e informações mais recentes:',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildNotificacoesImportantes(),
+                  const SizedBox(height: 24),
+                  _buildTarefasDoDia(),
+                  const SizedBox(height: 24),
+                  _buildResumoCorrecoesRecentes(),
+                  const SizedBox(height: 24),
+                  _buildCalendarioEntregas(),
+                ],
+              ),
+            ),
+          ),
+          if (_showNotificationPanel)
+            SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(16),
+                width: double.infinity,
+                height: 250,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Notificações',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text('Nenhuma notificação disponível no momento.'),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton(
+                        onPressed: _toggleNotificationPanel,
+                        child: const Text('Fechar'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Aqui estão suas tarefas e informações mais recentes:',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 24),
-              _buildNotificacoesImportantes(),
-              const SizedBox(height: 24),
-              _buildTarefasDoDia(),
-              const SizedBox(height: 24),
-              _buildResumoCorrecoesRecentes(),
-              const SizedBox(height: 24),
-              _buildCalendarioEntregas(),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
